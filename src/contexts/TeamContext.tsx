@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/contexts/AuthContext'
+import { hexToRgbTriplet, getContrastColor } from '@/lib/utils'
 import type { Team } from '@/types/database'
 
 type TeamContextValue = {
@@ -47,8 +48,17 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     const meta = document.querySelector('meta[name="theme-color"]')
     if (meta && team.secondary_color) meta.setAttribute('content', team.secondary_color)
 
-    document.documentElement.style.setProperty('--team-primary', team.primary_color)
-    document.documentElement.style.setProperty('--team-secondary', team.secondary_color)
+    const root = document.documentElement.style
+    const primaryRgb = hexToRgbTriplet(team.primary_color)
+    const secondaryRgb = hexToRgbTriplet(team.secondary_color)
+
+    if (primaryRgb) {
+      root.setProperty('--team-primary-rgb', primaryRgb)
+      root.setProperty('--team-primary-contrast', getContrastColor(team.primary_color))
+    }
+    if (secondaryRgb) {
+      root.setProperty('--team-secondary-rgb', secondaryRgb)
+    }
   }, [team])
 
   async function updateTeam(patch: Partial<Team>) {
