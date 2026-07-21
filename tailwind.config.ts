@@ -16,10 +16,9 @@ export default {
         border: '#242429',
         muted: '#8b8b93',
         foreground: '#f2f2f3',
-        accent: {
-          DEFAULT: '#f2c94c',
-          hover: '#ffd966',
-          foreground: '#0a0a0b'
+      accent: {
+          DEFAULT: 'rgb(var(--team-primary-rgb, 242 201 76) / <alpha-value>)',
+          foreground: 'var(--team-primary-contrast, #0a0a0b)'
         },
         success: '#3ecf8e',
         danger: '#f0645c',
